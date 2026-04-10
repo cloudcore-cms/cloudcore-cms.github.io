@@ -7,9 +7,23 @@ import Base from '../layouts/Base.astro';
   <section style="padding: 6rem 0 4rem; text-align: center;">
     <div class="container" style="max-width: 50rem;">
       <p style="font-size: 0.875rem; font-weight: 600; color: var(--c-accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">AI-Native Headless CMS</p>
-      <h1 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em;">
+      <h1 class="hero-heading">
         Build websites with AI.<br />Not with plugins.
       </h1>
+      <style>
+        .hero-heading {
+          font-size: 3.5rem;
+          font-weight: 700;
+          line-height: 1.1;
+          margin-bottom: 1.5rem;
+          letter-spacing: -0.02em;
+        }
+        @media (max-width: 48rem) {
+          .hero-heading {
+            font-size: 2.25rem;
+          }
+        }
+      </style>
       <p style="font-size: 1.25rem; color: var(--c-text-muted); margin-bottom: 2.5rem; line-height: 1.6;">
         A forkable headless CMS designed for the AI era. Build your site on a secure, production-ready foundation. Only include what you need — nothing more.
       </p>
