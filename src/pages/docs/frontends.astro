@@ -1,0 +1,68 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Frontend Starters" description="Deploy a frontend for your Cloudcore CMS.">
+  <h1>Frontend Starters</h1>
+  <p>Three starter templates to get your site running. Each connects to the <a href="/docs/public-api">Public API</a> to fetch published content. Deploy to Vercel, Netlify, or Cloudflare Pages.</p>
+  <p>In production, point your frontend at the Public API (<code>api.yourdomain.com</code>) rather than the CMS directly. This keeps the CMS locked down behind Cloudflare Access while your site reads content through a hardened, read-only endpoint.</p>
+
+  <h2>React + Vite</h2>
+  <p>Single-page app with React Router and TanStack Query. Client-side rendering.</p>
+  <pre><code>git clone https://github.com/cloudcore-cms/cloudcore-react.git
+cd cloudcore-react
+cp .env.example .env
+# Edit .env: VITE_CMS_URL=https://api.yourdomain.com
+npm install && npm run dev</code></pre>
+  <table>
+    <thead><tr><th>Platform</th><th>Deploy</th></tr></thead>
+    <tbody>
+      <tr><td>Vercel</td><td><code>npx vercel</code> — set <code>VITE_CMS_URL</code> env var</td></tr>
+      <tr><td>Netlify</td><td><code>npx netlify deploy --build</code> — set env in dashboard</td></tr>
+      <tr><td>Cloudflare Pages</td><td><code>npm run build && npx wrangler pages deploy dist</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Next.js</h2>
+  <p>Server-rendered with App Router. ISR for dynamic content. Image optimization.</p>
+  <pre><code>git clone https://github.com/cloudcore-cms/cloudcore-next.git
+cd cloudcore-next
+cp .env.example .env.local
+# Edit .env.local: NEXT_PUBLIC_CMS_URL=https://api.yourdomain.com
+npm install && npm run dev</code></pre>
+  <table>
+    <thead><tr><th>Platform</th><th>Deploy</th></tr></thead>
+    <tbody>
+      <tr><td>Vercel</td><td><code>npx vercel</code> — auto-detects Next.js</td></tr>
+      <tr><td>Netlify</td><td><code>npx netlify deploy --build</code> (requires <code>@netlify/plugin-nextjs</code>)</td></tr>
+      <tr><td>Cloudflare Pages</td><td>Requires <code>@cloudflare/next-on-pages</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Astro</h2>
+  <p>Static site generation. Zero JavaScript shipped by default. Perfect Lighthouse scores.</p>
+  <pre><code>git clone https://github.com/cloudcore-cms/cloudcore-astro.git
+cd cloudcore-astro
+cp .env.example .env
+# Edit .env: PUBLIC_CMS_URL=https://api.yourdomain.com
+npm install && npm run dev</code></pre>
+  <table>
+    <thead><tr><th>Platform</th><th>Deploy</th></tr></thead>
+    <tbody>
+      <tr><td>Vercel</td><td><code>npx vercel</code></td></tr>
+      <tr><td>Netlify</td><td><code>npx netlify deploy --build</code></td></tr>
+      <tr><td>Cloudflare Pages</td><td><code>npm run build && npx wrangler pages deploy dist</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Build your own</h2>
+  <p>The public API is framework-agnostic. Use any frontend — Vue, Svelte, Solid, or even a mobile app. The key endpoints:</p>
+  <pre><code>GET /api/v1/public/content?type=page          # List published pages
+GET /api/v1/public/content?type=post          # List published posts
+GET /api/v1/public/content/page/home          # Get page by slug
+GET /api/v1/public/content/post/my-post       # Get post by slug
+GET /api/v1/public/categories                 # List categories
+GET /api/v1/public/tags                       # List tags
+GET /api/v1/media/:id/file                    # Serve media file</code></pre>
+  <p>Or use an AI coding assistant to generate a custom frontend — give it the API docs and your design requirements.</p>
+</Docs>

@@ -1,0 +1,70 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Security" description="Security architecture and hardening in Cloudcore CMS.">
+  <h1>Security</h1>
+  <p>Cloudcore is built with enterprise-grade security from the ground up. Here's what protects your data.</p>
+
+  <h2>Cryptography</h2>
+  <ul>
+    <li><strong>Password hashing:</strong> PBKDF2-SHA512, 210,000 iterations (OWASP 2023 minimum)</li>
+    <li><strong>Session tokens:</strong> SHA-256 hashed before DB storage. Client holds the raw token, DB never sees it.</li>
+    <li><strong>Timing-safe comparisons:</strong> All authentication checks use constant-time comparison to prevent timing attacks</li>
+    <li><strong>Timing-safe delays:</strong> Failed auth attempts have normalized response times to prevent user enumeration</li>
+  </ul>
+
+  <h2>HTTP Security Headers</h2>
+  <table>
+    <thead><tr><th>Header</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Strict-Transport-Security</td><td><code>max-age=31536000; includeSubDomains; preload</code></td></tr>
+      <tr><td>Content-Security-Policy</td><td>Strict — <code>default-src 'self'</code>, no eval</td></tr>
+      <tr><td>X-Frame-Options</td><td><code>DENY</code></td></tr>
+      <tr><td>X-Content-Type-Options</td><td><code>nosniff</code></td></tr>
+      <tr><td>Referrer-Policy</td><td><code>strict-origin-when-cross-origin</code></td></tr>
+      <tr><td>Permissions-Policy</td><td>Camera, mic, geolocation disabled</td></tr>
+    </tbody>
+  </table>
+
+  <h2>CSRF Protection</h2>
+  <p>Three layers of defense:</p>
+  <ol>
+    <li><strong>Custom header:</strong> All state-changing requests require <code>X-CloudCore-Request: 1</code>. Browsers cannot send custom headers cross-origin without CORS preflight.</li>
+    <li><strong>Origin validation:</strong> Origin/Referer headers checked against <code>ALLOWED_ORIGINS</code> whitelist.</li>
+    <li><strong>SameSite cookies:</strong> Session cookies use <code>SameSite=Strict</code>.</li>
+  </ol>
+
+  <h2>Rate Limiting</h2>
+  <ul>
+    <li>Every endpoint has rate limiting (IP-based)</li>
+    <li>Login: exponential backoff (5 fails = 30s lockout, escalating to 1hr)</li>
+    <li>Passkey operations: per-user rate limits</li>
+    <li>Magic links: per-email rate limits</li>
+    <li>Public endpoints: 30–60 req/min per IP</li>
+  </ul>
+
+  <h2>Input Validation</h2>
+  <ul>
+    <li>All inputs validated with Zod schemas</li>
+    <li>Size limits on all fields (blocks, arrays, strings)</li>
+    <li>10MB global request body limit</li>
+    <li>SQL identifiers validated with strict regex patterns</li>
+  </ul>
+
+  <h2>File Upload Security</h2>
+  <ul>
+    <li>MIME type whitelist (images, video, audio, PDF only)</li>
+    <li>Magic byte validation (file content must match declared type)</li>
+    <li>SVG sanitization (removes script, style, event handlers, javascript: URLs)</li>
+    <li>Filenames sanitized (prevents path traversal)</li>
+    <li>File extensions derived from MIME type, not user input</li>
+    <li>Strict CSP on served media files</li>
+  </ul>
+
+  <h2>Audit Logging</h2>
+  <p>Every security-critical action is logged with user ID, IP address, and user-agent. Sensitive fields (passwords, tokens) are automatically redacted. Admins can view the audit log from the dashboard.</p>
+
+  <h2>Dependencies</h2>
+  <p>Zero npm audit vulnerabilities. All dependencies are kept up to date. The CMS uses only 4 production dependencies: Hono, Drizzle ORM, Zod, and @hono/zod-validator.</p>
+</Docs>

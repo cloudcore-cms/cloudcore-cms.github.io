@@ -1,0 +1,53 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Block Types" description="All available content block types in Cloudcore CMS.">
+  <h1>Block Types</h1>
+  <p>Content is built with blocks. Each block has a type, a value, and optional configuration.</p>
+
+  <h2>Available blocks</h2>
+  <table>
+    <thead><tr><th>Type</th><th>Label</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>paragraph</code></td><td>Paragraph</td><td>Plain text paragraph</td></tr>
+      <tr><td><code>heading</code></td><td>Heading</td><td>H1–H6 with level option</td></tr>
+      <tr><td><code>richtext</code></td><td>Rich Text</td><td>WYSIWYG editor — bold, italic, links, lists, headings, blockquotes</td></tr>
+      <tr><td><code>quote</code></td><td>Quote</td><td>Blockquote with optional citation</td></tr>
+      <tr><td><code>image</code></td><td>Image</td><td>Single image with caption and size options</td></tr>
+      <tr><td><code>gallery</code></td><td>Gallery</td><td>Multi-image grid with column options</td></tr>
+      <tr><td><code>video</code></td><td>Video</td><td>YouTube, Vimeo, or direct video URL</td></tr>
+      <tr><td><code>button</code></td><td>Button</td><td>CTA with link, style, and target options</td></tr>
+      <tr><td><code>code</code></td><td>Code Block</td><td>Code with language option</td></tr>
+      <tr><td><code>html</code></td><td>Custom HTML</td><td>Raw HTML content</td></tr>
+      <tr><td><code>embed</code></td><td>Embed</td><td>External content embed via URL</td></tr>
+      <tr><td><code>spacer</code></td><td>Spacer</td><td>Vertical spacing (sm/md/lg/xl)</td></tr>
+      <tr><td><code>divider</code></td><td>Divider</td><td>Horizontal rule</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Block structure</h2>
+  <pre><code set:html={`{
+  "id": "block-123",       // Auto-generated unique ID
+  "type": "richtext",      // Block type
+  "value": "&lt;p&gt;...&lt;/p&gt;", // Main content (HTML for richtext, text for others)
+  "options": {},           // Type-specific options
+  "mediaId": "01ABC...",   // Optional media reference
+  "mediaIds": []           // Optional multi-media references
+}`} /></pre>
+
+  <h2>Rendering blocks</h2>
+  <p>Frontends receive blocks as JSON arrays via the API. Each starter template includes a <code>BlockRenderer</code> component that maps block types to React/Astro components. Extend it to add custom block types.</p>
+
+  <h2>Rich text output</h2>
+  <p>The <code>richtext</code> block stores clean HTML produced by the Tiptap editor. It includes:</p>
+  <ul>
+    <li>Paragraphs, headings (H1–H3)</li>
+    <li>Bold, italic, strikethrough, inline code</li>
+    <li>Bullet and numbered lists</li>
+    <li>Blockquotes</li>
+    <li>Links (with <code>rel="noopener noreferrer"</code>)</li>
+    <li>Horizontal rules</li>
+  </ul>
+  <p>Render it with <code>dangerouslySetInnerHTML</code> (React) or <code>set:html</code> (Astro). The HTML is sanitized on the server before storage.</p>
+</Docs>

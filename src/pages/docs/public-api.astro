@@ -1,0 +1,80 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Public API" description="A read-only API for serving published content. Keep your CMS locked down.">
+  <h1>Public API</h1>
+  <p>The Cloudcore Public API is a separate, read-only Cloudflare Worker that serves published content from your CMS database. It is designed to be the only internet-facing endpoint while the CMS admin stays behind Cloudflare Access or a VPN.</p>
+
+  <h2>Why a separate API?</h2>
+  <p>The CMS has authentication, user management, media uploads, and write operations. By splitting the public-facing read API into its own worker, you can:</p>
+  <ul>
+    <li><strong>Lock down the CMS</strong> behind Cloudflare Access (zero trust) or restrict it to a private network</li>
+    <li><strong>Expose only reads</strong> — this API has zero write operations, zero auth endpoints, zero user data</li>
+    <li><strong>Cache aggressively</strong> — read-only responses with configurable TTL for CDN edge caching</li>
+    <li><strong>Rate limit independently</strong> — different limits for public traffic vs admin usage</li>
+    <li><strong>Deploy and update separately</strong> — update the CMS without touching the public API, and vice versa</li>
+  </ul>
+
+  <h2>Architecture</h2>
+  <pre><code set:html={`Internet -> cloudcore-api (read-only) -> D1/R2 <- cloudcore-cms (locked down)
+           api.example.com                          cms.example.com (CF Access)`} /></pre>
+  <p>Both workers share the same D1 database and R2 bucket. The CMS writes content, the Public API reads it. They deploy as independent workers so you can restrict access to each independently.</p>
+
+  <h2>Security guarantees</h2>
+  <ul>
+    <li><strong>Zero write operations</strong> — no INSERT, UPDATE, or DELETE anywhere in the codebase</li>
+    <li><strong>Zero auth/user data</strong> — never reads users, sessions, passwords, audit logs, or settings</li>
+    <li><strong>Zero admin endpoints</strong> — no login, no setup, no management</li>
+    <li><strong>Method enforcement</strong> — rejects all POST/PUT/PATCH/DELETE at the middleware level</li>
+    <li><strong>Rate limited</strong> — 120 requests/minute per IP</li>
+    <li><strong>CORS configurable</strong> — restrict to your frontend domains</li>
+    <li><strong>Single dependency</strong> — only Hono, zero npm vulnerabilities</li>
+  </ul>
+
+  <h2>Endpoints</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/</code></td><td>Health check and endpoint list</td></tr>
+      <tr><td><code>GET</code></td><td><code>/content</code></td><td>List published content. Query: <code>?type=page&amp;limit=20&amp;offset=0</code></td></tr>
+      <tr><td><code>GET</code></td><td><code>/content/:type/:slug</code></td><td>Get published content by type and slug</td></tr>
+      <tr><td><code>GET</code></td><td><code>/categories</code></td><td>List all categories</td></tr>
+      <tr><td><code>GET</code></td><td><code>/tags</code></td><td>List all tags</td></tr>
+      <tr><td><code>GET</code></td><td><code>/media/:id</code></td><td>Serve a media file</td></tr>
+    </tbody>
+  </table>
+  <p>All other HTTP methods return <code>405 Method Not Allowed</code>.</p>
+
+  <h2>Deploy</h2>
+  <pre><code>cd packages/api
+npm install
+
+# Update wrangler.toml with your D1 database_id (same as the CMS)
+
+npx wrangler deploy
+# Live at https://cloudcore-api.your-subdomain.workers.dev</code></pre>
+
+  <h2>Configuration</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ALLOWED_ORIGINS</code></td><td>Recommended</td><td>Comma-separated allowed origins for CORS. Leave empty to allow all (dev only).</td></tr>
+      <tr><td><code>CACHE_TTL</code></td><td>Optional</td><td>Cache TTL in seconds for content responses (default: 60, max: 86400).</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Connect your frontend</h2>
+  <p>Point your frontend at the Public API instead of the CMS directly:</p>
+  <pre><code># React (Vite)
+VITE_CMS_URL=https://api.yourdomain.com
+
+# Next.js
+NEXT_PUBLIC_CMS_URL=https://api.yourdomain.com
+
+# Astro
+PUBLIC_CMS_URL=https://api.yourdomain.com</code></pre>
+
+  <h2>Alternative: CMS built-in public routes</h2>
+  <p>If you prefer not to deploy a separate worker, the CMS itself includes public read-only routes at <code>/api/v1/public/*</code>. These work the same way but share the worker with the admin endpoints. The separate Public API is recommended for production to reduce attack surface.</p>
+</Docs>

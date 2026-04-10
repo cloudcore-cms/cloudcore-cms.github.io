@@ -1,0 +1,85 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Deployment" description="Deploy Cloudcore CMS to Cloudflare Workers.">
+  <h1>Deploy CMS</h1>
+  <p>Deploy the CMS API and admin UI to Cloudflare's global edge network.</p>
+
+  <h2>1. Create Cloudflare resources</h2>
+  <pre><code># Create D1 database
+npx wrangler d1 create cloudcore-cms
+# Copy the database_id into wrangler.toml
+
+# Create R2 bucket for media storage
+npx wrangler r2 bucket create cloudcore-cms</code></pre>
+
+  <h2>2. Update wrangler.toml</h2>
+  <p>Replace <code>database_id = "local"</code> with the real ID from step 1.</p>
+
+  <h2>3. Set secrets</h2>
+  <pre><code># Required: admin API token
+npx wrangler secret put ADMIN_TOKEN
+
+# Recommended: one-time setup protection
+npx wrangler secret put SETUP_TOKEN
+
+# Optional: OAuth (if using)
+npx wrangler secret put GITHUB_CLIENT_ID
+npx wrangler secret put GITHUB_CLIENT_SECRET
+npx wrangler secret put GOOGLE_CLIENT_ID
+npx wrangler secret put GOOGLE_CLIENT_SECRET
+
+# Optional: SMTP for magic links
+npx wrangler secret put SMTP_HOST
+npx wrangler secret put SMTP_USER
+npx wrangler secret put SMTP_PASS</code></pre>
+
+  <h2>4. Set environment variables</h2>
+  <p>Add to <code>[vars]</code> in <code>wrangler.toml</code>:</p>
+  <pre><code>[vars]
+SECURE_COOKIES = "true"
+ALLOWED_ORIGINS = "https://admin.yourdomain.com,https://yourdomain.com"
+SMTP_FROM = "noreply@yourdomain.com"
+SMTP_FROM_NAME = "Your Site"</code></pre>
+
+  <h2>5. Deploy</h2>
+  <pre><code># Deploy the worker
+npx wrangler deploy
+
+# Run database migrations
+npx wrangler d1 migrations apply cloudcore-cms --remote</code></pre>
+  <p>Your API is now live at <code>https://cloudcore-cms.your-subdomain.workers.dev</code></p>
+
+  <h2>6. Deploy the Public API (recommended)</h2>
+  <p>The <a href="/docs/public-api">Public API</a> is a separate read-only worker. Deploy it as the internet-facing endpoint for your frontend while keeping the CMS locked behind Cloudflare Access.</p>
+  <pre><code>cd ../api
+npm install
+
+# Update wrangler.toml with the same database_id as the CMS
+
+npx wrangler deploy
+# Live at https://cloudcore-api.your-subdomain.workers.dev</code></pre>
+  <p>Set <code>ALLOWED_ORIGINS</code> in the Public API's <code>wrangler.toml</code> to restrict CORS to your frontend domain(s).</p>
+
+  <h2>7. Deploy admin UI</h2>
+  <p>Build and deploy the admin as a static site:</p>
+  <pre><code>cd ../cms/admin
+npm run build
+npx wrangler pages deploy dist --project-name cloudcore-admin</code></pre>
+  <p>Or deploy to Vercel/Netlify — it's a standard Vite React app.</p>
+
+  <h2>8. Lock down the CMS</h2>
+  <p>With the Public API serving your frontend, you can now restrict access to the CMS worker using <a href="https://developers.cloudflare.com/cloudflare-one/applications/" target="_blank" rel="noopener">Cloudflare Access</a>. Only your admin team needs access to the CMS — everything else goes through the read-only Public API.</p>
+
+  <h2>9. Create your admin account</h2>
+  <p>Open the admin UI and create your first account. If you set <code>SETUP_TOKEN</code>, you'll need to provide it during setup.</p>
+
+  <h2>Custom domains</h2>
+  <p>Add custom domains in the Cloudflare dashboard under Workers &gt; your worker &gt; Settings &gt; Domains & Routes. A typical setup:</p>
+  <ul>
+    <li><code>api.yourdomain.com</code> — Public API (read-only, internet-facing)</li>
+    <li><code>cms.yourdomain.com</code> — CMS admin (behind Cloudflare Access)</li>
+    <li><code>www.yourdomain.com</code> — Frontend (Cloudflare Pages, Vercel, or Netlify)</li>
+  </ul>
+</Docs>

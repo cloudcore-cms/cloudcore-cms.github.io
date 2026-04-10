@@ -1,0 +1,38 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Authentication" description="Authentication methods available in Cloudcore CMS.">
+  <h1>Authentication Methods</h1>
+  <p>Cloudcore supports 5 authentication methods. All are configurable from Admin &gt; Settings.</p>
+
+  <h2>Password (email/password)</h2>
+  <p>Default method. Passwords are hashed with PBKDF2-SHA512 at 210,000 iterations (OWASP 2023 standard). Requirements: 12+ characters, uppercase, lowercase, number, special character.</p>
+
+  <h2>Passkeys (WebAuthn / FIDO2)</h2>
+  <p>Passwordless authentication using fingerprint, face scan, or hardware security keys. Users register passkeys from their Profile page, then use them to sign in.</p>
+
+  <h2>Magic Links</h2>
+  <p>Send a one-time login link via email. Requires SMTP configuration (or SendGrid/Resend/Mailgun API key). Links expire in 15 minutes and are single-use.</p>
+
+  <h2>GitHub OAuth</h2>
+  <p>Login with GitHub. Requires <code>GITHUB_CLIENT_ID</code> and <code>GITHUB_CLIENT_SECRET</code>. Only verified primary emails are accepted. Users must exist in the CMS first — OAuth does not auto-create accounts.</p>
+
+  <h2>Google OAuth</h2>
+  <p>Login with Google. Requires <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code>. Uses PKCE for extra security. Same rules as GitHub — accounts must exist first.</p>
+
+  <h2>Cloudflare Access</h2>
+  <p>Integrate with Cloudflare Access for zero-trust authentication. Requires <code>CF_ACCESS_TEAM_DOMAIN</code>, <code>CF_ACCESS_AUD</code>, and <code>CF_ACCESS_ENABLED=true</code>.</p>
+
+  <h2>Disabling methods</h2>
+  <p>Go to Admin &gt; Settings &gt; Authentication Methods to toggle each method on/off. Safety check: you cannot disable all methods. If an environment variable is not set for a method (e.g., no GitHub OAuth credentials), it shows as "Not configured" and cannot be enabled.</p>
+
+  <h2>Session management</h2>
+  <ul>
+    <li>Sessions last 30 days by default</li>
+    <li>Optional sliding window extends active sessions (max 90-day absolute lifetime)</li>
+    <li>Session tokens are SHA-256 hashed before storage — only the client has the raw token</li>
+    <li>All sessions are invalidated when a user's password is changed</li>
+    <li>Cookies use <code>SameSite=Strict</code>, <code>HttpOnly</code>, and <code>Secure</code> (in production)</li>
+  </ul>
+</Docs>

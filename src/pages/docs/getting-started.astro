@@ -1,0 +1,46 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Getting Started" description="Get Cloudcore CMS running locally in under 5 minutes.">
+  <h1>Getting Started</h1>
+  <p>Get Cloudcore CMS running locally in under 5 minutes.</p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li><strong>Node.js</strong> 20+ and npm</li>
+    <li><strong>Wrangler CLI</strong> — <code>npm install -g wrangler</code></li>
+    <li>A <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">Cloudflare account</a> (free tier is fine)</li>
+  </ul>
+
+  <h2>1. Clone the CMS</h2>
+  <pre><code>git clone https://github.com/cloudcore-cms/cloudcore-cms.git
+cd cloudcore-cms
+npm install</code></pre>
+
+  <h2>2. Create the local database</h2>
+  <pre><code>npx wrangler d1 migrations apply cloudcore-cms --local</code></pre>
+
+  <h2>3. Start the API</h2>
+  <pre><code>npm run dev:local
+# API running at http://localhost:8787</code></pre>
+
+  <h2>4. Start the admin UI</h2>
+  <pre><code>cd admin
+npm install
+npm run dev
+# Admin at http://localhost:5173</code></pre>
+
+  <h2>5. Create your admin account</h2>
+  <p>Open <a href="http://localhost:5173" target="_blank">http://localhost:5173</a> and create your first admin account. You're ready to create content.</p>
+
+  <h2>6. Connect a frontend</h2>
+  <p>Pick a <a href="/docs/frontends">starter frontend</a> (React, Next.js, or Astro), point it at <code>http://localhost:8787/api/v1</code>, and your content appears.</p>
+
+  <h2>Next steps</h2>
+  <ul>
+    <li><a href="/docs/architecture">Architecture overview</a></li>
+    <li><a href="/docs/blocks">Content block types</a></li>
+    <li><a href="/docs/deployment">Deploy to production</a></li>
+  </ul>
+</Docs>

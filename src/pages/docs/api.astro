@@ -1,0 +1,92 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="API Reference" description="Cloudcore CMS REST API endpoints.">
+  <h1>API Reference</h1>
+  <p>All endpoints are prefixed with <code>/api/v1</code>.</p>
+
+  <h2>Public API (no authentication)</h2>
+  <p>Use these from your frontend to fetch published content.</p>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/public/content</code></td><td>List published content. Query: <code>?type=page&amp;limit=20&amp;offset=0</code></td></tr>
+      <tr><td><code>GET</code></td><td><code>/public/content/:type/:slug</code></td><td>Get single published content by type and slug</td></tr>
+      <tr><td><code>GET</code></td><td><code>/public/categories</code></td><td>List all categories</td></tr>
+      <tr><td><code>GET</code></td><td><code>/public/tags</code></td><td>List all tags</td></tr>
+      <tr><td><code>GET</code></td><td><code>/media/:id/file</code></td><td>Serve a media file (images, videos, PDFs)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Auth API</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/auth/status</code></td><td>No</td><td>Check setup status and available auth methods</td></tr>
+      <tr><td><code>POST</code></td><td><code>/auth/setup</code></td><td>No</td><td>Create first admin account</td></tr>
+      <tr><td><code>POST</code></td><td><code>/auth/login</code></td><td>No</td><td>Login with email/password</td></tr>
+      <tr><td><code>POST</code></td><td><code>/auth/logout</code></td><td>No</td><td>Logout (clears session)</td></tr>
+      <tr><td><code>GET</code></td><td><code>/auth/me</code></td><td>Yes</td><td>Get current user</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/auth/me</code></td><td>Yes</td><td>Update own profile</td></tr>
+      <tr><td><code>POST</code></td><td><code>/auth/me/change-password</code></td><td>Yes</td><td>Change own password</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Content API (requires auth)</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/content</code></td><td>Any</td><td>List all content (including drafts)</td></tr>
+      <tr><td><code>GET</code></td><td><code>/content/:id</code></td><td>Any</td><td>Get content by ID</td></tr>
+      <tr><td><code>POST</code></td><td><code>/content</code></td><td>Any</td><td>Create content</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/content/:id</code></td><td>Owner/Editor+</td><td>Update content</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/content/:id</code></td><td>Owner/Editor+</td><td>Delete content</td></tr>
+      <tr><td><code>POST</code></td><td><code>/content/:id/publish</code></td><td>Editor+</td><td>Publish content</td></tr>
+      <tr><td><code>POST</code></td><td><code>/content/:id/unpublish</code></td><td>Editor+</td><td>Unpublish content</td></tr>
+      <tr><td><code>GET</code></td><td><code>/content/:id/revisions</code></td><td>Owner/Editor+</td><td>List revision history</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Media API (requires auth)</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/media</code></td><td>Any</td><td>List media files</td></tr>
+      <tr><td><code>POST</code></td><td><code>/media/upload</code></td><td>Any</td><td>Upload a file (multipart form)</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/media/:id</code></td><td>Editor+</td><td>Update media metadata</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/media/:id</code></td><td>Editor+</td><td>Delete media file</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Taxonomy API (requires auth)</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Role</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>POST</code></td><td><code>/categories</code></td><td>Editor+</td><td>Create category</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/categories/:id</code></td><td>Editor+</td><td>Update category</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/categories/:id</code></td><td>Editor+</td><td>Delete category</td></tr>
+      <tr><td><code>POST</code></td><td><code>/tags</code></td><td>Editor+</td><td>Create tag</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/tags/:id</code></td><td>Editor+</td><td>Update tag</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/tags/:id</code></td><td>Editor+</td><td>Delete tag</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Settings API (admin only)</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/settings</code></td><td>Get all settings</td></tr>
+      <tr><td><code>PUT</code></td><td><code>/settings/:key</code></td><td>Update a setting</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/settings/:key</code></td><td>Delete a setting</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Authentication</h2>
+  <p>The API supports two auth methods:</p>
+  <ul>
+    <li><strong>Session cookie</strong> — set by <code>/auth/login</code>. Include <code>credentials: 'include'</code> in fetch requests.</li>
+    <li><strong>Bearer token</strong> — pass <code>Authorization: Bearer YOUR_ADMIN_TOKEN</code> header. Uses the <code>ADMIN_TOKEN</code> env var.</li>
+  </ul>
+  <p>All state-changing requests require the <code>X-CloudCore-Request: 1</code> CSRF header.</p>
+</Docs>

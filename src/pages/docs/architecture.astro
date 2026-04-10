@@ -1,0 +1,63 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Architecture" description="How Cloudcore CMS is built and why.">
+  <h1>Architecture</h1>
+  <p>Cloudcore is a headless CMS that runs entirely on Cloudflare's edge network. No traditional servers, no PHP, no MySQL.</p>
+
+  <h2>Stack</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Runtime</td><td>Cloudflare Workers</td><td>V8 isolates, sub-50ms cold starts globally</td></tr>
+      <tr><td>API Framework</td><td>Hono</td><td>Lightweight, fast, TypeScript-native</td></tr>
+      <tr><td>Database</td><td>Cloudflare D1 (SQLite)</td><td>Relational data at the edge</td></tr>
+      <tr><td>Storage</td><td>Cloudflare R2</td><td>S3-compatible object storage for media</td></tr>
+      <tr><td>ORM</td><td>Drizzle ORM</td><td>Type-safe SQL queries</td></tr>
+      <tr><td>Validation</td><td>Zod</td><td>Runtime schema validation on all inputs</td></tr>
+      <tr><td>Admin UI</td><td>React + Vite + TailwindCSS</td><td>Admin dashboard with WYSIWYG editor</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Request flow</h2>
+  <p>In production, the recommended architecture uses two workers:</p>
+  <pre><code set:html={`Frontend -> cloudcore-api (read-only) -> D1/R2 <- cloudcore-cms (behind CF Access)
+            api.example.com                          cms.example.com (locked down)`} /></pre>
+  <p>The <a href="/docs/public-api">Public API</a> is a separate read-only worker with zero write operations and zero access to user data. The CMS stays behind Cloudflare Access or a VPN. Both share the same D1 database and R2 bucket.</p>
+
+  <h2>Philosophy</h2>
+  <p>Cloudcore is the <strong>foundation</strong>, not the whole house. It provides:</p>
+  <ul>
+    <li>Content storage and retrieval via API</li>
+    <li>Block-based content model</li>
+    <li>Authentication and authorization</li>
+    <li>Media management</li>
+    <li>Admin dashboard</li>
+  </ul>
+  <p>It does <strong>not</strong> provide plugins, themes, comments, analytics, e-commerce, or SEO tools. You build what you need on top, or let AI generate it for you.</p>
+
+  <h2>Content model</h2>
+  <p>Content is stored as structured blocks — arrays of typed JSON objects. Each block has a <code>type</code>, a <code>value</code>, and optional <code>options</code>. This is more flexible than Markdown and more structured than raw HTML.</p>
+  <pre><code set:html={`{
+  "type": "page",
+  "title": "About Us",
+  "slug": "about",
+  "blocks": [
+    { "type": "richtext", "value": "&lt;p&gt;Welcome to our site.&lt;/p&gt;" },
+    { "type": "image", "mediaId": "01ABC...", "options": { "caption": "Our team" } },
+    { "type": "code", "value": "npm install cloudcore", "options": { "language": "bash" } }
+  ]
+}`} /></pre>
+
+  <h2>RBAC</h2>
+  <p>Three roles with cascading permissions:</p>
+  <table>
+    <thead><tr><th>Role</th><th>Can do</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Admin</strong></td><td>Everything — users, settings, publish, delete</td></tr>
+      <tr><td><strong>Editor</strong></td><td>Create, edit, publish content. Manage categories, tags, media.</td></tr>
+      <tr><td><strong>Contributor</strong></td><td>Create drafts only. Cannot publish, cannot manage taxonomy or media.</td></tr>
+    </tbody>
+  </table>
+</Docs>

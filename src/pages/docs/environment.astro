@@ -1,0 +1,85 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="Environment Variables" description="All environment variables for Cloudcore CMS.">
+  <h1>Environment Variables</h1>
+  <p>Set these in <code>wrangler.toml</code> under <code>[vars]</code> for non-secret values, or use <code>npx wrangler secret put KEY</code> for secrets.</p>
+
+  <h2>Core</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ADMIN_TOKEN</code></td><td>Yes</td><td>Shared secret for Bearer token API access. Use a long random string.</td></tr>
+      <tr><td><code>SETUP_TOKEN</code></td><td>Recommended</td><td>Required during initial admin account creation. Prevents race attacks on setup.</td></tr>
+      <tr><td><code>SECURE_COOKIES</code></td><td>Recommended</td><td>Set to <code>"true"</code> for production. Forces <code>Secure</code> flag on session cookies.</td></tr>
+      <tr><td><code>ALLOWED_ORIGINS</code></td><td>Recommended</td><td>Comma-separated allowed origins for CORS. E.g., <code>"https://admin.example.com,https://example.com"</code></td></tr>
+      <tr><td><code>SESSION_SLIDING_WINDOW</code></td><td>Optional</td><td>Set to <code>"true"</code> to extend active sessions automatically.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>GitHub OAuth</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GITHUB_CLIENT_ID</code></td><td>GitHub OAuth app client ID</td></tr>
+      <tr><td><code>GITHUB_CLIENT_SECRET</code></td><td>GitHub OAuth app client secret</td></tr>
+      <tr><td><code>OAUTH_CALLBACK_URL</code></td><td>Base URL for OAuth callbacks (e.g., <code>https://cms.example.com</code>)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Google OAuth</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GOOGLE_CLIENT_ID</code></td><td>Google OAuth client ID</td></tr>
+      <tr><td><code>GOOGLE_CLIENT_SECRET</code></td><td>Google OAuth client secret</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Email / Magic Links</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>SMTP_HOST</code></td><td>SMTP server hostname</td></tr>
+      <tr><td><code>SMTP_PORT</code></td><td>SMTP port (default: 587)</td></tr>
+      <tr><td><code>SMTP_USER</code></td><td>SMTP username</td></tr>
+      <tr><td><code>SMTP_PASS</code></td><td>SMTP password</td></tr>
+      <tr><td><code>SMTP_FROM</code></td><td>Sender email (e.g., <code>noreply@example.com</code>)</td></tr>
+      <tr><td><code>SMTP_FROM_NAME</code></td><td>Sender display name</td></tr>
+      <tr><td><code>MAGIC_LINK_BASE_URL</code></td><td>Base URL for magic link emails (where the admin UI is hosted)</td></tr>
+      <tr><td><code>SENDGRID_API_KEY</code></td><td>Alternative to SMTP — SendGrid API key</td></tr>
+      <tr><td><code>RESEND_API_KEY</code></td><td>Alternative to SMTP — Resend API key</td></tr>
+      <tr><td><code>MAILGUN_API_KEY</code></td><td>Alternative to SMTP — Mailgun API key</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cloudflare Access</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CF_ACCESS_ENABLED</code></td><td>Set to <code>"true"</code> to enable Cloudflare Access login</td></tr>
+      <tr><td><code>CF_ACCESS_TEAM_DOMAIN</code></td><td>Your Cloudflare Access team domain (e.g., <code>yourteam.cloudflareaccess.com</code>)</td></tr>
+      <tr><td><code>CF_ACCESS_AUD</code></td><td>Application Audience (AUD) tag from Access settings</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cloudflare Turnstile</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>TURNSTILE_SECRET</code></td><td>Cloudflare Turnstile secret key for bot protection on forms</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Frontend environment variables</h2>
+  <p>Each frontend starter uses one env var to point to the CMS API:</p>
+  <table>
+    <thead><tr><th>Frontend</th><th>Variable</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>React (Vite)</td><td><code>VITE_CMS_URL</code></td><td><code>https://cms.example.com/api/v1</code></td></tr>
+      <tr><td>Next.js</td><td><code>NEXT_PUBLIC_CMS_URL</code></td><td><code>https://cms.example.com/api/v1</code></td></tr>
+      <tr><td>Astro</td><td><code>PUBLIC_CMS_URL</code></td><td><code>https://cms.example.com/api/v1</code></td></tr>
+    </tbody>
+  </table>
+</Docs>

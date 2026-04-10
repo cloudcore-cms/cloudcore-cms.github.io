@@ -1,0 +1,186 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Cloudcore - AI-Native CMS for the Modern Web" description="A dead-simple headless CMS built for developers and AI. Fork it, own it forever. Runs 100% free on Cloudflare.">
+  <!-- Hero -->
+  <section style="padding: 6rem 0 4rem; text-align: center;">
+    <div class="container" style="max-width: 50rem;">
+      <p style="font-size: 0.875rem; font-weight: 600; color: var(--c-accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem;">AI-Native Headless CMS</p>
+      <h1 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em;">
+        Build websites with AI.<br />Not with plugins.
+      </h1>
+      <p style="font-size: 1.25rem; color: var(--c-text-muted); margin-bottom: 2.5rem; line-height: 1.6;">
+        A forkable headless CMS designed for the AI era. Build your site on a secure, production-ready foundation. Only include what you need — nothing more.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/docs/getting-started" style="display: inline-flex; align-items: center; padding: 0.75rem 1.75rem; background: var(--c-primary); color: white; border-radius: 0.5rem; font-weight: 500; text-decoration: none; font-size: 0.9375rem;">
+          Get Started
+        </a>
+        <a href="https://github.com/cloudcore-cms" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; padding: 0.75rem 1.75rem; border: 1px solid var(--c-border); color: var(--c-text); border-radius: 0.5rem; font-weight: 500; text-decoration: none; font-size: 0.9375rem;">
+          View on GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Cloudcore -->
+  <section style="padding: 4rem 0; border-top: 1px solid var(--c-border); background: var(--c-bg-alt);">
+    <div class="container" style="max-width: 48rem; text-align: center;">
+      <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem;">A minimal foundation. You build the rest.</h2>
+      <p style="color: var(--c-text-muted); font-size: 1.0625rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        Cloudcore provides content management, authentication, and media handling — the essentials every site needs. Everything else is custom to your project. Build exactly what your users need with AI-assisted development, without shipping features you don't use.
+      </p>
+      <p style="color: var(--c-text-muted); font-size: 1.0625rem; line-height: 1.7;">
+        Deployed as edge isolates on Cloudflare Workers, Cloudcore has no traditional server infrastructure — no filesystem, no exposed runtimes, no server configuration to manage. Your site's attack surface is limited to the code you write and the four dependencies you ship.
+      </p>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section style="padding: 4rem 0; border-top: 1px solid var(--c-border);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 2rem;">
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">100% Free to Run</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Runs entirely on Cloudflare's free tier. Workers, D1, R2, Pages  all free. No credit card required. No surprise bills. Most sites will never pay a cent.</p>
+        </div>
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">AI-Ready Codebase</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Every repo includes structured documentation that AI coding assistants can read. Add features, build pages, or customize the design with AI-assisted development workflows.</p>
+        </div>
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Fork It, Own It</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">No vendor lock-in. No proprietary formats. No marketplace fees. Fork the repo, it's yours forever. MIT licensed. Customize everything.</p>
+        </div>
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Edge-Deployed Globally</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Runs on Cloudflare Workers across 300+ cities. Sub-50ms response times worldwide. No servers to manage, no scaling to worry about.</p>
+        </div>
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Security by Default</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Enterprise-grade security built in. CSRF protection, rate limiting, hashed sessions, RBAC, SVG sanitization, and more.</p>
+        </div>
+        <div style="padding: 1.5rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Read-Only Public API</h3>
+          <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Deploy a separate read-only API for your frontend. Lock the CMS behind Cloudflare Access. Zero write operations, zero user data exposed to the internet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section style="padding: 4rem 0; background: var(--c-bg-alt); border-top: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border);">
+    <div class="container" style="max-width: 48rem;">
+      <h2 style="font-size: 1.75rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem;">How it works</h2>
+      <p style="color: var(--c-text-muted); text-align: center; margin-bottom: 2.5rem;">From zero to a live website in minutes.</p>
+      <div style="display: grid; gap: 1.5rem;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <span style="background: var(--c-primary); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0;">1</span>
+          <div>
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">Fork the CMS and a frontend starter</p>
+            <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Pick React, Next.js, or Astro. Or build your own with any framework.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <span style="background: var(--c-primary); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0;">2</span>
+          <div>
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">Customize with AI or by hand</p>
+            <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Use AI-assisted development to build pages, add features, or customize the design. The codebase is structured for both human and AI readability.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <span style="background: var(--c-primary); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0;">3</span>
+          <div>
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">Deploy for free</p>
+            <p style="color: var(--c-text-muted); font-size: 0.9375rem;">CMS to Cloudflare Workers. Frontend to Vercel, Netlify, or Cloudflare Pages. All free tiers.</p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <span style="background: var(--c-primary); color: white; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0;">4</span>
+          <div>
+            <p style="font-weight: 600; margin-bottom: 0.25rem;">Manage content from the admin</p>
+            <p style="color: var(--c-text-muted); font-size: 0.9375rem;">Non-technical users update content through the admin dashboard. WYSIWYG editor, media library, user roles.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick deploy -->
+  <section style="padding: 4rem 0;">
+    <div class="container" style="max-width: 48rem;">
+      <h2 style="font-size: 1.75rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem;">5 commands to production</h2>
+      <p style="color: var(--c-text-muted); text-align: center; margin-bottom: 2rem;">From zero to a globally-deployed CMS.</p>
+      <pre><code>npx wrangler d1 create cloudcore-cms
+npx wrangler r2 bucket create cloudcore-cms
+npx wrangler secret put ADMIN_TOKEN
+npx wrangler deploy
+npx wrangler d1 migrations apply cloudcore-cms --remote
+
+# Your CMS is live at https://cloudcore-cms.you.workers.dev
+# Total cost: $0</code></pre>
+    </div>
+  </section>
+
+  <!-- Starter Frontends -->
+  <section style="padding: 4rem 0; background: var(--c-bg-alt); border-top: 1px solid var(--c-border);">
+    <div class="container">
+      <h2 style="font-size: 1.75rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem;">Pick a starter. Or build your own.</h2>
+      <p style="color: var(--c-text-muted); text-align: center; margin-bottom: 2.5rem;">Three frontend templates to get started. Deploy to Vercel, Netlify, or Cloudflare Pages. Or build a custom frontend with any framework.</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; max-width: 52rem; margin: 0 auto;">
+        <a href="https://github.com/cloudcore-cms/cloudcore-react" target="_blank" rel="noopener" style="display: block; padding: 1.5rem; border: 1px solid var(--c-border); border-radius: 0.75rem; text-decoration: none; background: white;">
+          <p style="font-weight: 600; font-size: 1.125rem; color: var(--c-text); margin-bottom: 0.25rem;">React + Vite</p>
+          <p style="color: var(--c-text-muted); font-size: 0.875rem;">SPA with React Router and TanStack Query.</p>
+        </a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-next" target="_blank" rel="noopener" style="display: block; padding: 1.5rem; border: 1px solid var(--c-border); border-radius: 0.75rem; text-decoration: none; background: white;">
+          <p style="font-weight: 600; font-size: 1.125rem; color: var(--c-text); margin-bottom: 0.25rem;">Next.js</p>
+          <p style="color: var(--c-text-muted); font-size: 0.875rem;">Server-rendered with App Router and ISR.</p>
+        </a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-astro" target="_blank" rel="noopener" style="display: block; padding: 1.5rem; border: 1px solid var(--c-border); border-radius: 0.75rem; text-decoration: none; background: white;">
+          <p style="font-weight: 600; font-size: 1.125rem; color: var(--c-text); margin-bottom: 0.25rem;">Astro</p>
+          <p style="color: var(--c-text-muted); font-size: 0.875rem;">Static site generation. Zero JS shipped.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Edge vs Traditional -->
+  <section style="padding: 4rem 0; border-top: 1px solid var(--c-border);">
+    <div class="container" style="max-width: 48rem;">
+      <h2 style="font-size: 1.75rem; font-weight: 700; text-align: center; margin-bottom: 2rem;">Edge-native vs traditional hosting</h2>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.9375rem;">
+        <thead>
+          <tr>
+            <th style="padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--c-border);"></th>
+            <th style="padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--c-border); font-weight: 600;">Traditional CMS</th>
+            <th style="padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--c-border); font-weight: 600;">Cloudcore</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); font-weight: 500;">Hosting</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">File server you configure and maintain</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">Edge isolates — no filesystem, no shell</td></tr>
+          <tr><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); font-weight: 500;">Attack surface</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">OS, runtime, plugins, file permissions</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">4 dependencies, sandboxed V8 isolate</td></tr>
+          <tr><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); font-weight: 500;">Scaling</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">Single server, manual scaling</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">Auto-scales across 300+ cities</td></tr>
+          <tr><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); font-weight: 500;">Cost</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">$5-50+/month for hosting alone</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">$0 — runs on Cloudflare free tier</td></tr>
+          <tr><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); font-weight: 500;">Customization</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">Install plugins for common features</td><td style="padding: 0.625rem 1rem; border-bottom: 1px solid var(--c-border); color: var(--c-text-muted);">AI builds exactly what you need</td></tr>
+          <tr><td style="padding: 0.625rem 1rem; font-weight: 500;">Ownership</td><td style="padding: 0.625rem 1rem; color: var(--c-text-muted);">Tied to platform and plugin ecosystem</td><td style="padding: 0.625rem 1rem; color: var(--c-text-muted);">MIT licensed — fork and it's yours</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Open Source -->
+  <section style="padding: 4rem 0; background: var(--c-bg-alt); border-top: 1px solid var(--c-border);">
+    <div class="container" style="max-width: 48rem; text-align: center;">
+      <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem;">Open Source. Free Forever.</h2>
+      <p style="color: var(--c-text-muted); margin-bottom: 2rem;">MIT licensed. No premium tiers. No plugin marketplace. Just code that works.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+        <a href="https://github.com/cloudcore-cms/cloudcore-cms" target="_blank" rel="noopener" style="padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--c-text); text-decoration: none; background: white;">CMS (API + Admin)</a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-api" target="_blank" rel="noopener" style="padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--c-text); text-decoration: none; background: white;">Public API (Read-Only)</a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-react" target="_blank" rel="noopener" style="padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--c-text); text-decoration: none; background: white;">React Starter</a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-next" target="_blank" rel="noopener" style="padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--c-text); text-decoration: none; background: white;">Next.js Starter</a>
+        <a href="https://github.com/cloudcore-cms/cloudcore-astro" target="_blank" rel="noopener" style="padding: 0.5rem 1.25rem; border: 1px solid var(--c-border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--c-text); text-decoration: none; background: white;">Astro Starter</a>
+      </div>
+    </div>
+  </section>
+</Base>
