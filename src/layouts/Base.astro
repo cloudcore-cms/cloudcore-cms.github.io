@@ -101,26 +101,97 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       .prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; color: var(--c-text-muted); }
       .prose li { margin-bottom: 0.25rem; }
       .prose pre { margin-bottom: 1.5rem; }
-      .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.875rem; }
-      .prose th, .prose td { padding: 0.625rem 1rem; text-align: left; border-bottom: 1px solid var(--c-border); }
+      .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.875rem; overflow-x: auto; display: block; }
+      .prose th, .prose td { padding: 0.625rem 1rem; text-align: left; border-bottom: 1px solid var(--c-border); white-space: nowrap; }
       .prose th { font-weight: 600; color: var(--c-text); background: var(--c-bg-alt); }
       .prose td { color: var(--c-text-muted); }
       .prose strong { color: var(--c-text); }
+
+      @media (max-width: 48rem) {
+        .prose h1 { font-size: 1.75rem; }
+        .prose h2 { font-size: 1.25rem; }
+        .prose th, .prose td { padding: 0.5rem 0.625rem; font-size: 0.8125rem; }
+      }
+
+      /* Mobile nav */
+      .nav-toggle { display: none; }
+      .nav-toggle-label {
+        display: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        margin-right: -0.5rem;
+      }
+      .nav-toggle-label span,
+      .nav-toggle-label span::before,
+      .nav-toggle-label span::after {
+        display: block;
+        width: 1.25rem;
+        height: 2px;
+        background: var(--c-text);
+        position: relative;
+        transition: all 0.2s ease;
+      }
+      .nav-toggle-label span::before,
+      .nav-toggle-label span::after {
+        content: '';
+        position: absolute;
+      }
+      .nav-toggle-label span::before { top: -6px; }
+      .nav-toggle-label span::after { top: 6px; }
+      .nav-toggle:checked ~ .nav-toggle-label span { background: transparent; }
+      .nav-toggle:checked ~ .nav-toggle-label span::before { top: 0; transform: rotate(45deg); background: var(--c-text); }
+      .nav-toggle:checked ~ .nav-toggle-label span::after { top: 0; transform: rotate(-45deg); background: var(--c-text); }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        font-size: 0.9375rem;
+      }
+      .header-nav a { color: var(--c-text-muted); text-decoration: none; }
+      .header-nav a:hover { color: var(--c-text); text-decoration: none; }
+
+      @media (max-width: 48rem) {
+        .nav-toggle-label { display: block; }
+        .header-nav {
+          display: none;
+          position: absolute;
+          top: 4rem;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: var(--c-bg);
+          border-bottom: 1px solid var(--c-border);
+          padding: 1rem 1.5rem;
+          gap: 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .header-nav a {
+          display: block;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid var(--c-border);
+          font-size: 1rem;
+        }
+        .header-nav a:last-child { border-bottom: none; }
+        .nav-toggle:checked ~ .header-nav { display: flex; }
+      }
     </style>
   </head>
   <body>
     <!-- Header -->
     <header style="border-bottom: 1px solid var(--c-border); position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); z-index: 50;">
-      <div class="container" style="display: flex; align-items: center; justify-content: space-between; height: 4rem;">
-        <a href="/" style="font-size: 1.25rem; font-weight: 700; color: var(--c-text); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between; height: 4rem; position: relative;">
+        <a href="/" style="font-size: 1.25rem; font-weight: 700; color: var(--c-text); text-decoration: none;">
           Cloudcore
         </a>
-        <nav style="display: flex; align-items: center; gap: 2rem; font-size: 0.9375rem;">
-          <a href="/docs/getting-started" style="color: var(--c-text-muted);">Docs</a>
-          <a href="/docs/api" style="color: var(--c-text-muted);">API</a>
-          <a href="/docs/security" style="color: var(--c-text-muted);">Security</a>
-          <a href="/docs/deployment" style="color: var(--c-text-muted);">Deploy</a>
-          <a href="https://github.com/cloudcore-cms" style="color: var(--c-text-muted);" target="_blank" rel="noopener">GitHub</a>
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+        <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation"><span></span></label>
+        <nav class="header-nav">
+          <a href="/docs/getting-started">Docs</a>
+          <a href="/docs/api">API</a>
+          <a href="/docs/security">Security</a>
+          <a href="/docs/deployment">Deploy</a>
+          <a href="https://github.com/cloudcore-cms" target="_blank" rel="noopener">GitHub</a>
         </nav>
       </div>
     </header>
@@ -167,7 +238,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           </div>
         </div>
         <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); color: var(--c-text-muted); font-size: 0.8125rem; text-align: center;">
-          MIT License &middot; Built by: <a href="https://rolandfarkas.com/?utm_source=cloudcore-cms.github.io">Roland</a>
+          MIT License · Built with Cloudflare Workers, Hono, D1, R2
         </p>
       </div>
     </footer>

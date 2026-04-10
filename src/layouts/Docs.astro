@@ -44,9 +44,18 @@ const sections = [
 ---
 
 <Base title={`${title} - Cloudcore Docs`} description={description}>
-  <div class="container" style="display: flex; gap: 3rem; padding-top: 2rem; padding-bottom: 4rem;">
+  <div class="docs-layout container">
+    <!-- Mobile sidebar toggle -->
+    <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" />
+    <label for="sidebar-toggle" class="sidebar-toggle-label">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-right: 0.375rem;">
+        <path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      Navigation
+    </label>
+
     <!-- Sidebar -->
-    <aside style="width: 14rem; flex-shrink: 0; position: sticky; top: 5.5rem; align-self: flex-start; max-height: calc(100dvh - 7rem); overflow-y: auto;">
+    <aside class="docs-sidebar">
       <nav style="font-size: 0.875rem;">
         {sections.map((section) => (
           <div style="margin-bottom: 1.5rem;">
@@ -71,8 +80,72 @@ const sections = [
     </aside>
 
     <!-- Content -->
-    <article class="prose" style="flex: 1; min-width: 0;">
+    <article class="prose docs-content">
       <slot />
     </article>
   </div>
+
+  <style>
+    .docs-layout {
+      display: flex;
+      gap: 3rem;
+      padding-top: 2rem;
+      padding-bottom: 4rem;
+    }
+
+    .docs-sidebar {
+      width: 14rem;
+      flex-shrink: 0;
+      position: sticky;
+      top: 5.5rem;
+      align-self: flex-start;
+      max-height: calc(100dvh - 7rem);
+      overflow-y: auto;
+    }
+
+    .docs-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sidebar-toggle { display: none; }
+    .sidebar-toggle-label { display: none; }
+
+    @media (max-width: 48rem) {
+      .docs-layout {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .sidebar-toggle-label {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--c-text-muted);
+        cursor: pointer;
+        border-bottom: 1px solid var(--c-border);
+        margin-bottom: 1.5rem;
+      }
+
+      .docs-sidebar {
+        display: none;
+        width: 100%;
+        position: static;
+        max-height: none;
+        padding-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid var(--c-border);
+      }
+
+      .sidebar-toggle:checked ~ .docs-sidebar {
+        display: block;
+      }
+
+      .sidebar-toggle:checked ~ .sidebar-toggle-label {
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
 </Base>
