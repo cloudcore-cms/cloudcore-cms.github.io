@@ -181,8 +181,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <!-- Header -->
     <header style="border-bottom: 1px solid var(--c-border); position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); z-index: 50;">
       <div class="container" style="display: flex; align-items: center; justify-content: space-between; height: 4rem; position: relative;">
-        <a href="/" style="font-size: 1.25rem; font-weight: 700; color: var(--c-text); text-decoration: none;">
+        <a href="/" style="font-size: 1.25rem; font-weight: 700; color: var(--c-text); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
           Cloudcore
+          <span style="font-size: 0.625rem; font-weight: 600; color: var(--c-accent); background: var(--c-accent-light); padding: 0.125rem 0.4rem; border-radius: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em;">Beta</span>
         </a>
         <input type="checkbox" id="nav-toggle" class="nav-toggle" />
         <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation"><span></span></label>
@@ -242,7 +243,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           </div>
         </div>
         <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); color: var(--c-text-muted); font-size: 0.8125rem; text-align: center;">
-          MIT License · Built by <a href="https://rolandfarkas.com" target="_blank" rel="noopener" style="color: var(--c-text-muted);">Roland Farkas</a>
+          MIT License · Built by <a href="https://rolandfarkas.com" target="_blank" rel="noopener" style="color: var(--c-text-muted);">Roland</a>
         </p>
       </div>
     </footer>
