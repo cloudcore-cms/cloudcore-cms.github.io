@@ -1,0 +1,111 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="MCP Server" description="Let AI tools manage your Cloudcore CMS via the Model Context Protocol.">
+  <h1>MCP Server</h1>
+  <p>The Cloudcore MCP server lets AI tools manage your CMS. Create pages, write posts, manage categories and tags — all through natural conversation with Claude Code, Claude Desktop, Cursor, or any MCP-compatible client.</p>
+
+  <h2>Setup</h2>
+
+  <h3>1. Clone and build</h3>
+  <pre><code>git clone https://github.com/cloudcore-cms/cloudcore-mcp.git
+cd cloudcore-mcp
+npm install
+npm run build</code></pre>
+
+  <h3>2. Add to Claude Code</h3>
+  <pre><code set:html={`claude mcp add cloudcore \\
+  -e CLOUDCORE_CMS_URL=https://cloudcore-cms.you.workers.dev \\
+  -e CLOUDCORE_API_TOKEN=your-admin-token \\
+  -- node /path/to/cloudcore-mcp/dist/index.js`} /></pre>
+
+  <h3>3. Add to Claude Desktop</h3>
+  <p>Edit <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>:</p>
+  <pre><code set:html={`{
+  "mcpServers": {
+    "cloudcore": {
+      "command": "node",
+      "args": ["/path/to/cloudcore-mcp/dist/index.js"],
+      "env": {
+        "CLOUDCORE_CMS_URL": "https://cloudcore-cms.you.workers.dev",
+        "CLOUDCORE_API_TOKEN": "your-admin-token"
+      }
+    }
+  }
+}`} /></pre>
+
+  <h2>What you can do</h2>
+  <p>Once connected, just talk to Claude:</p>
+  <ul>
+    <li>"Create a blog post about serverless security"</li>
+    <li>"Update the about page and rewrite the intro"</li>
+    <li>"List all draft posts"</li>
+    <li>"Publish the post about edge computing"</li>
+    <li>"Add a category called Tutorials"</li>
+    <li>"What are the current site settings?"</li>
+  </ul>
+
+  <h2>Available tools</h2>
+  <table>
+    <thead><tr><th>Tool</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>list_content</code></td><td>List pages and posts (filter by type, status)</td></tr>
+      <tr><td><code>get_content</code></td><td>Get a specific content item</td></tr>
+      <tr><td><code>create_content</code></td><td>Create a new page or post with blocks</td></tr>
+      <tr><td><code>update_content</code></td><td>Update title, slug, status, or blocks</td></tr>
+      <tr><td><code>delete_content</code></td><td>Delete content permanently</td></tr>
+      <tr><td><code>publish_content</code></td><td>Make content publicly visible</td></tr>
+      <tr><td><code>unpublish_content</code></td><td>Revert to draft</td></tr>
+      <tr><td><code>list_media</code></td><td>List uploaded media files</td></tr>
+      <tr><td><code>delete_media</code></td><td>Delete a media file</td></tr>
+      <tr><td><code>list_categories</code></td><td>List all categories</td></tr>
+      <tr><td><code>create_category</code></td><td>Create a category</td></tr>
+      <tr><td><code>delete_category</code></td><td>Delete a category</td></tr>
+      <tr><td><code>list_tags</code></td><td>List all tags</td></tr>
+      <tr><td><code>create_tag</code></td><td>Create a tag</td></tr>
+      <tr><td><code>delete_tag</code></td><td>Delete a tag</td></tr>
+      <tr><td><code>get_settings</code></td><td>Get site settings</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Security</h2>
+  <ul>
+    <li><strong>Bearer token auth</strong> on all CMS API calls</li>
+    <li><strong>Rate limiting</strong> — configurable per-minute limit (default: 60)</li>
+    <li><strong>Read-only mode</strong> — blocks all write operations</li>
+    <li><strong>Tool whitelist</strong> — only expose specific tools</li>
+    <li><strong>Audit logging</strong> — every tool invocation logged</li>
+    <li><strong>Input validation</strong> — all parameters validated</li>
+    <li><strong>Secret redaction</strong> — tokens never appear in logs</li>
+    <li><strong>No direct DB access</strong> — everything goes through the CMS API</li>
+  </ul>
+
+  <h2>Configuration</h2>
+  <table>
+    <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CLOUDCORE_CMS_URL</code></td><td>Yes</td><td>CMS API URL</td></tr>
+      <tr><td><code>CLOUDCORE_API_TOKEN</code></td><td>Yes</td><td>Bearer token (same as CMS ADMIN_TOKEN)</td></tr>
+      <tr><td><code>CLOUDCORE_READ_ONLY</code></td><td>No</td><td>Set to <code>true</code> to disable all writes</td></tr>
+      <tr><td><code>CLOUDCORE_ALLOWED_TOOLS</code></td><td>No</td><td>Comma-separated tool whitelist</td></tr>
+      <tr><td><code>CLOUDCORE_RATE_LIMIT</code></td><td>No</td><td>Requests per minute (default: 60)</td></tr>
+      <tr><td><code>CF_ACCESS_CLIENT_ID</code></td><td>No</td><td>Cloudflare Access service token ID</td></tr>
+      <tr><td><code>CF_ACCESS_CLIENT_SECRET</code></td><td>No</td><td>Cloudflare Access service token secret</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Multiple instances</h2>
+  <p>Manage several Cloudcore sites from the same Claude session. Register each with its own env vars:</p>
+  <pre><code set:html={`claude mcp add my-blog \\
+  -e CLOUDCORE_CMS_URL=https://blog-cms.workers.dev \\
+  -e CLOUDCORE_API_TOKEN=token-1 \\
+  -- node /path/to/cloudcore-mcp/dist/index.js
+
+claude mcp add client-site \\
+  -e CLOUDCORE_CMS_URL=https://client-cms.workers.dev \\
+  -e CLOUDCORE_API_TOKEN=token-2 \\
+  -e CLOUDCORE_READ_ONLY=true \\
+  -- node /path/to/cloudcore-mcp/dist/index.js`} /></pre>
+  <p>Then use them naturally: "using my-blog, create a post about..." or "using client-site, list all pages".</p>
+</Docs>

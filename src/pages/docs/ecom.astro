@@ -1,0 +1,85 @@
+---
+import Docs from '../../layouts/Docs.astro';
+---
+
+<Docs title="E-commerce" description="Add products, subscriptions, Stripe and PayPal to your Cloudcore CMS.">
+  <h1>E-commerce</h1>
+  <p>Cloudcore Ecom adds products, subscriptions, Stripe, and PayPal checkout to your CMS. It's not a standalone service  it's source code you copy into your CMS. One Worker, one database, one auth system.</p>
+
+  <h2>Setup</h2>
+  <ol>
+    <li>Clone the <a href="https://github.com/cloudcore-cms/cloudcore-ecom" target="_blank" rel="noopener">cloudcore-ecom</a> repo</li>
+    <li>Copy the <code>src/</code> files into your CMS</li>
+    <li>Run the migration against your D1 database</li>
+    <li>Mount the routes in your CMS <code>index.ts</code></li>
+    <li>Set Stripe/PayPal environment variables</li>
+  </ol>
+
+  <h2>Mount the routes</h2>
+  <pre><code set:html={`import { ecomRoutes, ecomPublicRoutes, ecomWebhookRoutes } from './ecom';
+
+// Admin routes (behind auth)
+app.route('/api/v1/shop', ecomRoutes);
+
+// Public product listing (no auth)
+app.route('/api/v1/public/shop', ecomPublicRoutes);
+
+// Payment webhooks (verified by provider signatures)
+app.route('/api/v1/webhooks', ecomWebhookRoutes);`} /></pre>
+
+  <h2>API Endpoints</h2>
+
+  <h3>Admin (requires CMS auth)</h3>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/shop/products</code></td><td>List products</td></tr>
+      <tr><td><code>GET</code></td><td><code>/shop/products/:id</code></td><td>Get product</td></tr>
+      <tr><td><code>POST</code></td><td><code>/shop/products</code></td><td>Create product</td></tr>
+      <tr><td><code>PATCH</code></td><td><code>/shop/products/:id</code></td><td>Update product</td></tr>
+      <tr><td><code>DELETE</code></td><td><code>/shop/products/:id</code></td><td>Delete product</td></tr>
+      <tr><td><code>POST</code></td><td><code>/shop/checkout</code></td><td>Create checkout session</td></tr>
+      <tr><td><code>GET</code></td><td><code>/shop/subscriptions</code></td><td>List all subscriptions</td></tr>
+      <tr><td><code>GET</code></td><td><code>/shop/subscriptions/my</code></td><td>Current user's subscriptions</td></tr>
+      <tr><td><code>POST</code></td><td><code>/shop/subscriptions/:id/cancel</code></td><td>Cancel subscription</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Public (no auth)</h3>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td><code>/public/shop/products</code></td><td>List active products</td></tr>
+      <tr><td><code>GET</code></td><td><code>/public/shop/products/:slug</code></td><td>Get product by slug</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Product types</h2>
+  <p><strong>One-time purchase</strong> — a single payment for a product (template, download, etc.).</p>
+  <p><strong>Subscription</strong> — recurring billing with configurable interval (weekly, monthly, yearly) and optional trial period.</p>
+  <p>Prices are in cents (4900 = $49.00).</p>
+
+  <h2>Payment providers</h2>
+  <p><strong>Stripe</strong> — hosted checkout for cards. Set <code>STRIPE_SECRET_KEY</code> and <code>STRIPE_WEBHOOK_SECRET</code>.</p>
+  <p><strong>PayPal</strong> — hosted checkout as alternative. Set <code>PAYPAL_CLIENT_ID</code>, <code>PAYPAL_CLIENT_SECRET</code>, and <code>PAYPAL_MODE</code> (sandbox or live).</p>
+  <p>All card handling is done by Stripe/PayPal. No PCI compliance needed.</p>
+
+  <h2>How it works</h2>
+  <ol>
+    <li>Admin creates products via the CMS API</li>
+    <li>Frontend lists active products via the public endpoint</li>
+    <li>User clicks buy — frontend calls <code>/shop/checkout</code> with product ID and provider</li>
+    <li>User is redirected to Stripe/PayPal hosted checkout</li>
+    <li>On success, webhook creates order/subscription records in D1</li>
+    <li>Frontend checks subscription status via <code>/shop/subscriptions/my</code></li>
+  </ol>
+
+  <h2>Database tables</h2>
+  <p>All tables prefixed with <code>cc_ecom_</code> to avoid conflicts with CMS tables:</p>
+  <ul>
+    <li><code>cc_ecom_products</code> — products and subscription plans</li>
+    <li><code>cc_ecom_orders</code> — one-time purchase records</li>
+    <li><code>cc_ecom_subscriptions</code> — active/canceled subscriptions</li>
+    <li><code>cc_ecom_webhook_events</code> — idempotency log for payment webhooks</li>
+  </ul>
+</Docs>
